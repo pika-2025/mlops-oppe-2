@@ -33,6 +33,9 @@ jobs:
     
       - name: Setup CML (Continuous Machine Learning)
         uses: iterative/setup-cml@v2.0.1
+
+      - name: Pip install
+        run: pip install dvc dvc-gs dvc[gcs]
         
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
