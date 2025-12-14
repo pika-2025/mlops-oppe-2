@@ -34,7 +34,7 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets.AUTH_KEY }}
 
       - name: Setup Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -92,7 +92,7 @@ jobs:
 
       - name: Setup Kubernetes Secrets
         run: |
-          echo '${{ secrets.GCP_SA_KEY }}' > gcp-credentials.json
+          echo '${{ secrets.AUTH_KEY }}' > gcp-credentials.json
           
           # Register GCP authentication secret in cluster
           kubectl create secret generic gcp-credentials \
@@ -105,7 +105,7 @@ jobs:
         run: |
           # Substitute placeholders with actual values
           sed -e "s|CONTAINER_IMAGE_PLACEHOLDER|${{ env.ARTIFACT_REGISTRY_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT }}/${{ env.ARTIFACT_REGISTRY_NAME }}/${{ env.CONTAINER_IMAGE }}:${{ env.COMMIT_HASH }}|g" \
-              -e "s|MLFLOW_URI_PLACEHOLDER|${{ secrets.MLFLOW_TRACKING_URI }}|g" \
+              -e "s|MLFLOW_URI_PLACEHOLDER|${{ secrets.MLFLOW_URI }}|g" \
               k8s/deployment.yaml > k8s/deployment-final.yaml
           
           kubectl apply -f k8s/deployment-final.yaml
