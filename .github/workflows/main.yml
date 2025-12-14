@@ -44,13 +44,6 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install DVC
-        run: |
-          pip install dvc dvc-gs
-
-      - name: Pull Data
-        run: dvc pull
-
       - name: Setup Docker
         uses: docker/setup-buildx-action@v3
 
