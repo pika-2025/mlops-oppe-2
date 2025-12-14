@@ -1,4 +1,0 @@
-[core]
-    remote = bucket
-['remote "bucket"']
-    url = gs://mlops-course-keen-phalanx-473718-p1

@@ -1,0 +1,13 @@
+uv.lock
+pyproject.toml
+.python-version
+.vscode/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+*.log
+.env
+.venv/

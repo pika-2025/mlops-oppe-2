@@ -1,32 +1,70 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fastapi-backend
+  name: iris-classifier-fastapi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: fastapi-backend
+      app: iris-ml-backend
   template:
     metadata:
       labels:
-        app: fastapi-backend
+        app: iris-ml-backend
     spec:
       containers:
-      - name: fastapi-backend
-        image: us-central1-docker.pkg.dev/keen-phalanx-473718-p1/mlops-mlflow/fastapi-backend:latest
+      - name: ml-service
+        image: CONTAINER_IMAGE_PLACEHOLDER
         ports:
         - containerPort: 8000
+        env:
+        - name: MLFLOW_URI
+          value: "MLFLOW_URI_PLACEHOLDER"
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/app/credentials.json"
+        volumeMounts:
+        - name: gcp-credentials
+          mountPath: /app/credentials.json
+          subPath: credentials.json
+      volumes:
+      - name: gcp-credentials
+        secret:
+          secretName: gcp-credentials
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: fastapi-backend-service
+  name: iris-ml-service
 spec:
   type: LoadBalancer
   selector:
-    app: fastapi-backend
+    app: iris-ml-backend
   ports:
   - protocol: TCP
     port: 80
     targetPort: 8000
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: iris-ml-scaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: iris-classifier-fastapi
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
