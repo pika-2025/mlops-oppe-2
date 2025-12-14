@@ -74,6 +74,7 @@ jobs:
               --zone ${{ env.K8S_REGION }} \
               --num-nodes=1 \
               --machine-type=e2-small \
+              --disk-type=pd-standard \
               --project=${{ env.GCP_PROJECT }}
           fi
 
