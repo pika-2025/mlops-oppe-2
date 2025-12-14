@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: iris-classifier-fastapi
+  name: iris-ml-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: iris-ml-backend
+      app: iris-ml-app
   template:
     metadata:
       labels:
-        app: iris-ml-backend
+        app: iris-ml-app
     spec:
       containers:
       - name: ml-service
@@ -38,7 +38,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: iris-ml-backend
+    app: iris-ml-app
   ports:
   - protocol: TCP
     port: 80
@@ -52,7 +52,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: iris-classifier-fastapi
+    name: iris-ml-deployment
   minReplicas: 1
   maxReplicas: 5
   metrics:

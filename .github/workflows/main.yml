@@ -16,7 +16,7 @@ env:
   ARTIFACT_REGISTRY_NAME: mlops-iris-repo
   CONTAINER_IMAGE: iris-ml-service
   K8S_CLUSTER_NAME: mlops-gke-iris
-  K8S_REGION: us-central1
+  K8S_REGION: us-central1-a
   APP_DEPLOYMENT_NAME: iris-ml-deployment
   APP_LABEL: iris-ml-app
   MODEL_SERVICE_NAME: iris-ml-svc
